@@ -26,14 +26,14 @@ class Test_import_packages(TestCase):
         import sys
         expected = set([wheel, sys])
         actual = _import_packages(set(['wheel', 'sys']))
-        self.assertSetEqual(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_optional_imports_exist(self):
         import wheel
         import sys
         expected = set([wheel, sys])
         actual = _import_packages(set(), optional=set(['wheel', 'sys']))
-        self.assertSetEqual(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_required_import_missing(self):
         try:
@@ -74,7 +74,7 @@ class Test_build_includes(TestCase):
             'wheel.tool.*',
         ])
         actual = build_includes(packages, freezer=FREEZER.DEFAULT)
-        self.assertSetEqual(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_cxfreeze_build_includes(self):
         packages = set(['wheel', 'sys'])
@@ -89,7 +89,7 @@ class Test_build_includes(TestCase):
             'wheel.test.test_wheelfile', 'wheel.tool', 'wheel.util', 'wheel.wininst2wheel'
         ])
         actual = build_includes(packages, freezer=FREEZER.CXFREEZE)
-        self.assertSetEqual(expected, actual)
+        self.assertEqual(expected, actual)
 
 if __name__ == '__main__':
     test_main()
