@@ -3,7 +3,7 @@
 History
 -------
 
-0.1.7 (2014-10-28)
+0.1.8 (2014-10-28)
 ------------------
 * Version detection changes for readthedocs.org
 
