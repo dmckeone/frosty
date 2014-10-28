@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+freezers
+----------------------------------
+Test all freezer lookup helper functions
+"""
+from unittest import main as test_main
+from unittest import TestCase
+
+from frosty.freezers import FREEZER, resolve_freezer
+
+
+class Test_freezer_resolve(TestCase):
+    """
+    All tests for the _import_packages internal function
+    """
+
+    freezers = [
+        (FREEZER.DEFAULT, u'default'),
+        (FREEZER.PY2APP, u'py2app'),
+        (FREEZER.PY2EXE, u'py2exe'),
+        (FREEZER.BBFREEZE, u'bbfreeze'),
+        (FREEZER.CXFREEZE, u'cxfreeze')
+    ]
+
+    def test_string_constant_lookup(self):
+        """
+        Ensure that a freezer can be lookup up via the string constants
+        """
+        for expected_cls, lookup_string in self.freezers:
+            actual_instance = resolve_freezer(lookup_string)
+            actual_cls = actual_instance.__class__
+            self.assertEqual(actual_cls, expected_cls)
+
+    def test_python_constant_lookup(self):
+        """
+        Ensure that a freezer can be lookup up via the FREEZER constant
+        """
+        for python_constant_cls, expected_name in self.freezers:
+            actual_instance = resolve_freezer(python_constant_cls)
+            actual_name = unicode(actual_instance)
+            self.assertEqual(actual_name, expected_name)
+
+    def test_instantiated_built_in_lookup(self):
+        """
+        Ensure that an instantiated freezer is passed through
+        """
+        actual_instance = resolve_freezer(FREEZER.DEFAULT())
+        self.assertEqual(actual_instance.__class__, FREEZER.DEFAULT)
+
+
+if __name__ == '__main__':
+    test_main()
