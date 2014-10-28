@@ -28,11 +28,11 @@ class _Default(UnicodeMixin, object):
         through to the includes as-is
         :return: 2-tuple of a list of the pass-through includes and the package_root_paths
         """
-        passthrough_includes = {
+        passthrough_includes = set([
             str(package.__name__)
             for package in include_packages
             if not hasattr(package, '__file__')
-        }
+        ])
         package_file_paths = {
             str(os.path.abspath(package.__file__)): str(package.__name__)
             for package in include_packages
@@ -59,7 +59,7 @@ class _Default(UnicodeMixin, object):
         for package_path, package_name in six.iteritems(package_root_paths):
             if re.search(r'__init__.py.*$', package_path):
                 # Looks like a package.  Walk the directory and see if there are more.
-                package_files = {os.path.dirname(package_path)}
+                package_files = set([os.path.dirname(package_path)])
                 for root, dirs, files in os.walk(os.path.dirname(package_path)):
                     if '__init__.py' in files:
                         package_files.add(root)
@@ -67,9 +67,9 @@ class _Default(UnicodeMixin, object):
                 if len(package_files) > 1:
                     common_prefix = os.path.commonprefix(package_files)
                     common_dir = os.path.dirname(common_prefix)
-                    package_tails = {f[len(common_dir) + len(os.sep):] for f in package_files}
-                    package_names = {tail.replace(os.sep, '.') for tail in package_tails}
-                    package_names_with_star = {pkg + '.*' if pkg != package_name else pkg for pkg in package_names}
+                    package_tails = set([f[len(common_dir) + len(os.sep):] for f in package_files])
+                    package_names = set([tail.replace(os.sep, '.') for tail in package_tails])
+                    package_names_with_star = set([pkg + '.*' if pkg != package_name else pkg for pkg in package_names])
                     includes |= package_names_with_star
 
                 else:
@@ -148,8 +148,8 @@ class _CxFreeze(_Default):
 
                 common_prefix = os.path.commonprefix(package_modules)
                 common_dir = os.path.dirname(common_prefix)
-                package_tails = {f[len(common_dir) + len(os.sep):] for f in package_modules}
-                package_names = {os.path.splitext(tail)[0].replace(os.sep, '.') for tail in package_tails}
+                package_tails = set([f[len(common_dir) + len(os.sep):] for f in package_modules])
+                package_names = set([os.path.splitext(tail)[0].replace(os.sep, '.') for tail in package_tails])
                 includes |= package_names
         return includes
 
@@ -168,7 +168,7 @@ class FREEZER(object):
     BBFREEZE = _BbFreeze
     CXFREEZE = _CxFreeze
 
-    ALL = {DEFAULT, PY2EXE, PY2APP, BBFREEZE, CXFREEZE}
+    ALL = set([DEFAULT, PY2EXE, PY2APP, BBFREEZE, CXFREEZE])
 
 
 def _freezer_lookup(freezer_string):
