@@ -6,7 +6,7 @@ Frosty
     :target: http://badge.fury.io/py/frosty
 
 .. image:: https://travis-ci.org/dmckeone/Frosty.png?branch=master
-        :target: https://travis-ci.org/dmckeone/Frosty
+        :target: https://travis-ci.org/dmckeone/frosty
 
 .. image:: https://pypip.in/d/frosty/badge.png
         :target: https://pypi.python.org/pypi/frosty
