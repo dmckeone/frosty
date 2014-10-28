@@ -13,7 +13,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 requirements = [r.strip() for r in open('requirements.txt').readlines()]
 test_requirements = []
 
-VERSION = '0.1.6'
+VERSION = '0.1.7'
 
 setup(
     name='frosty',
