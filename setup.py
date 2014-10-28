@@ -7,21 +7,17 @@ try:
 except ImportError:
     from distutils.core import setup
 
+VERSION = '0.1.1'
 
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
-requirements = [
-    # TODO: put package requirements here
-]
-
-test_requirements = [
-    # TODO: put package test requirements here
-]
+requirements = open('requirements.txt').read()
+test_requirements = []
 
 setup(
     name='frosty',
-    version='0.1.0',
+    version=VERSION,
     description='Frosty is a collection of utilities for working with frozen packages.',
     long_description=readme + '\n\n' + history,
     author='David McKeone',
@@ -30,14 +26,15 @@ setup(
     packages=[
         'frosty',
     ],
-    # package_dir={
-    #     'frosty': 'frosty'
-    # },
+    package_dir={
+        'frosty': 'frosty'
+    },
     include_package_data=True,
     install_requires=requirements,
     license="BSD",
     zip_safe=False,
-    keywords='frosty',
+    download_url = 'https://github.com/dmckeone/Frosty/tarball/{}'.format(VERSION),
+    keywords=['frosty', 'frozen', 'esky', 'py2app', 'py2exe', 'bbfreeze', 'cxfreeze', 'utilities'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
