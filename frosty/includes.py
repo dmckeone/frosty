@@ -31,7 +31,7 @@ def _import_packages(packages, optional=None):
 
     # Report aggregated list of import failures (save a developer time when building a new frozen environment)
     if failures:
-        raise ImportError(u"Unable to find required packages: {}".format(u", ".join(failures)))
+        raise ImportError(u"Unable to find required packages: {0}".format(u", ".join(failures)))
 
     # Check all optional packages (and warn if some aren't found)
     failures = set()
@@ -44,7 +44,7 @@ def _import_packages(packages, optional=None):
 
     # Warn user which optional packages weren't found
     for failure in failures:
-        warn(ImportWarning(u"Unable to import {}".format(failure)))
+        warn(ImportWarning(u"Unable to import {0}".format(failure)))
 
     return package_references
 

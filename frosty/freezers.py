@@ -186,10 +186,10 @@ def _freezer_lookup(freezer_string):
             return freezer
     else:
         if sanitized != freezer_string:
-            raise ValueError(u"Unsupported freezer type \"{}\". (Sanitized to \"{}\")".format(freezer_string,
+            raise ValueError(u"Unsupported freezer type \"{0}\". (Sanitized to \"{1}\")".format(freezer_string,
                                                                                               sanitized))
         else:
-            raise ValueError(u"Unsupported freezer type \"{}\".".format(freezer_string))
+            raise ValueError(u"Unsupported freezer type \"{0}\".".format(freezer_string))
 
 
 def resolve_freezer(freezer):
@@ -214,7 +214,7 @@ def resolve_freezer(freezer):
 
     # Warn when a custom freezer implementation is used.
     if freezer not in FREEZER.ALL:
-        warn(u"Using custom freezer implelmentation: {}".format(freezer))
+        warn(u"Using custom freezer implelmentation: {0}".format(freezer))
 
     return freezer
 
