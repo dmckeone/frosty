@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import frosty
+
 try:
     from setuptools import setup
 except ImportError:
@@ -13,11 +15,9 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 requirements = [r.strip() for r in open('requirements.txt').readlines()]
 test_requirements = []
 
-VERSION = '0.1.7'
-
 setup(
     name='frosty',
-    version=VERSION,
+    version=frosty.__version__,
     description='Frosty is a collection of utilities for working with frozen packages.',
     long_description=readme + '\n\n' + history,
     author='David McKeone',
@@ -33,7 +33,7 @@ setup(
     install_requires=requirements,
     license="BSD",
     zip_safe=False,
-    download_url = 'https://github.com/dmckeone/Frosty/tarball/{0}'.format(VERSION),
+    download_url = 'https://github.com/dmckeone/Frosty/tarball/{0}'.format(frosty.__version__),
     keywords=['frosty', 'frozen', 'esky', 'py2app', 'py2exe', 'bbfreeze', 'cxfreeze', 'utilities'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
