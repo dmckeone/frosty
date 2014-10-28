@@ -2,7 +2,7 @@
 #
 from __future__ import absolute_import
 
-__version__ = '0.1.5'
+__version__ = '0.1.6'
 
 # Expose Public API
 from .includes import build_includes
