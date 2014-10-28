@@ -6,6 +6,10 @@ freezers
 ----------------------------------
 Test all freezer lookup helper functions
 """
+from __future__ import absolute_import
+
+import six
+
 from unittest import main as test_main
 from unittest import TestCase
 
@@ -40,7 +44,7 @@ class Test_freezer_resolve(TestCase):
         """
         for python_constant_cls, expected_name in self.freezers:
             actual_instance = resolve_freezer(python_constant_cls)
-            actual_name = str(actual_instance)
+            actual_name = six.text_type(actual_instance)
             self.assertEqual(actual_name, expected_name)
 
     def test_instantiated_built_in_lookup(self):

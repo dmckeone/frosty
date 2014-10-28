@@ -2,6 +2,7 @@
 #
 from __future__ import absolute_import
 
+import six
 import sys
 
 from contextlib import contextmanager
@@ -14,7 +15,7 @@ class UnicodeMixin(object):
     if sys.version_info >= (3, 0, 0, 'final', 0):
         __str__ = lambda x: x.__unicode__()
     else:
-        __str__ = lambda x: unicode(x).encode('utf-8')
+        __str__ = lambda x: six.text_type(x).encode('utf-8')
 
 
 class ReprMixin(object):
@@ -24,7 +25,7 @@ class ReprMixin(object):
     if sys.version_info >= (3, 0, 0, 'final', 0):
         __repr__ = lambda x: x.__unicode__()
     else:
-        __repr__ = lambda x: unicode(x).encode('utf-8')
+        __repr__ = lambda x: six.text_type(x).encode('utf-8')
 
 
 if sys.version_info < (3, 4, 0, 'final', 0):

@@ -29,12 +29,12 @@ class _Default(UnicodeMixin, object):
         :return: 2-tuple of a list of the pass-through includes and the package_root_paths
         """
         passthrough_includes = set([
-            str(package.__name__)
+            six.text_type(package.__name__)
             for package in include_packages
             if not hasattr(package, '__file__')
         ])
         package_file_paths = dict([
-            (str(os.path.abspath(package.__file__)), str(package.__name__))
+            (six.text_type(os.path.abspath(package.__file__)), six.text_type(package.__name__))
             for package in include_packages
             if hasattr(package, '__file__')
         ])
@@ -181,8 +181,8 @@ def _freezer_lookup(freezer_string):
     sanitized = freezer_string.lower().strip()
     for freezer in FREEZER.ALL:
         freezer_instance = freezer()
-        freezer_name = str(freezer_instance)
-        if freezer_name == str(sanitized):
+        freezer_name = six.text_type(freezer_instance)
+        if freezer_name == six.text_type(sanitized):
             return freezer
     else:
         if sanitized != freezer_string:

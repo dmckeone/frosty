@@ -6,6 +6,7 @@ includes
 ----------------------------------
 Test all freezer include functions
 """
+from __future__ import absolute_import
 
 from warnings import catch_warnings, simplefilter
 from unittest import main as test_main
