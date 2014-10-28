@@ -24,15 +24,15 @@ class Test_import_packages(TestCase):
     def test_imports_exist(self):
         import wheel
         import sys
-        expected = {wheel, sys}
-        actual = _import_packages({'wheel', 'sys'})
+        expected = set([wheel, sys])
+        actual = _import_packages(set(['wheel', 'sys']))
         self.assertSetEqual(expected, actual)
 
     def test_optional_imports_exist(self):
         import wheel
         import sys
         expected = {wheel, sys}
-        actual = _import_packages({}, optional={'wheel', 'sys'})
+        actual = _import_packages(set(), optional=set(['wheel', 'sys']))
         self.assertSetEqual(expected, actual)
 
     def test_required_import_missing(self):
@@ -63,8 +63,8 @@ class Test_import_packages(TestCase):
 class Test_build_includes(TestCase):
 
     def test_default_build_includes(self):
-        packages = {'wheel', 'sys'}
-        expected = {
+        packages = set(['wheel', 'sys'])
+        expected = set([
             'sys',
             'wheel',
             'wheel.signatures.*',
@@ -72,13 +72,13 @@ class Test_build_includes(TestCase):
             'wheel.test.complex-dist.complexdist.*',
             'wheel.test.simple.dist.simpledist.*',
             'wheel.tool.*',
-        }
+        ])
         actual = build_includes(packages, freezer=FREEZER.DEFAULT)
         self.assertSetEqual(expected, actual)
 
     def test_cxfreeze_build_includes(self):
-        packages = {'wheel', 'sys'}
-        expected = {
+        packages = set(['wheel', 'sys'])
+        expected = set([
             'sys', 'wheel', 'wheel.__main__', 'wheel.archive', 'wheel.bdist_wheel', 'wheel.decorator',
             'wheel.egg2wheel', 'wheel.install', 'wheel.metadata', 'wheel.paths', 'wheel.pep425tags',
             'wheel.pkginfo', 'wheel.signatures', 'wheel.signatures.djbec', 'wheel.signatures.ed25519py',
@@ -87,7 +87,7 @@ class Test_build_includes(TestCase):
             'wheel.test.test_keys', 'wheel.test.test_paths', 'wheel.test.test_ranking',
             'wheel.test.test_signatures', 'wheel.test.test_tagopt', 'wheel.test.test_tool',
             'wheel.test.test_wheelfile', 'wheel.tool', 'wheel.util', 'wheel.wininst2wheel'
-        }
+        ])
         actual = build_includes(packages, freezer=FREEZER.CXFREEZE)
         self.assertSetEqual(expected, actual)
 
