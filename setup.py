@@ -12,7 +12,7 @@ except ImportError:
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
-requirements = open('requirements.txt').read()
+requirements = [r.strip() for r in open('requirements.txt').readlines()]
 test_requirements = []
 
 setup(

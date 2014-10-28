@@ -8,15 +8,15 @@ Test all freezer include functions
 """
 from __future__ import absolute_import
 
+import unittest
+
 from warnings import catch_warnings, simplefilter
-from unittest import main as test_main
-from unittest import TestCase
 
 from frosty.includes import _import_packages, build_includes
 from frosty.freezers import FREEZER
 
 
-class Test_import_packages(TestCase):
+class Test_import_packages(unittest.TestCase):
     """
     All tests for the _import_packages internal function
     """
@@ -42,8 +42,9 @@ class Test_import_packages(TestCase):
         except ImportError:
             pass
 
-        with self.assertRaises(ImportError):
+        def test_import_package():
             _import_packages(set(['im_not_a_real_package']))
+        self.assertRaises(ImportError, test_import_package)
 
     def test_optional_import_missing(self):
         try:
@@ -60,7 +61,7 @@ class Test_import_packages(TestCase):
         self.assertTrue(all(w.category is ImportWarning for w in caught_warnings))
 
 
-class Test_build_includes(TestCase):
+class Test_build_includes(unittest.TestCase):
 
     def test_default_build_includes(self):
         packages = set(['wheel', 'sys'])
@@ -74,7 +75,7 @@ class Test_build_includes(TestCase):
             'wheel.tool.*',
         ])
         actual = build_includes(packages, freezer=FREEZER.DEFAULT)
-        self.assertEqual(expected, actual)
+        self.assertSetEqual(expected, actual)
 
     def test_cxfreeze_build_includes(self):
         packages = set(['wheel', 'sys'])
@@ -89,7 +90,7 @@ class Test_build_includes(TestCase):
             'wheel.test.test_wheelfile', 'wheel.tool', 'wheel.util', 'wheel.wininst2wheel'
         ])
         actual = build_includes(packages, freezer=FREEZER.CXFREEZE)
-        self.assertEqual(expected, actual)
+        self.assertSetEqual(expected, actual)
 
 if __name__ == '__main__':
-    test_main()
+    unittest.main()

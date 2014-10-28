@@ -9,14 +9,17 @@ Test all freezer lookup helper functions
 from __future__ import absolute_import
 
 import six
+import sys
 
-from unittest import main as test_main
-from unittest import TestCase
+if sys.version_info <= (2, 6, 0, 'final', 0):
+    import unittest2 as unittest
+else:
+    import unittest
 
 from frosty.freezers import FREEZER, resolve_freezer
 
 
-class Test_freezer_resolve(TestCase):
+class Test_freezer_resolve(unittest.TestCase):
     """
     All tests for the _import_packages internal function
     """
@@ -56,4 +59,4 @@ class Test_freezer_resolve(TestCase):
 
 
 if __name__ == '__main__':
-    test_main()
+    unittest.main()
