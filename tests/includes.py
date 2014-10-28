@@ -31,7 +31,7 @@ class Test_import_packages(TestCase):
     def test_optional_imports_exist(self):
         import wheel
         import sys
-        expected = {wheel, sys}
+        expected = set([wheel, sys])
         actual = _import_packages(set(), optional=set(['wheel', 'sys']))
         self.assertSetEqual(expected, actual)
 
@@ -43,7 +43,7 @@ class Test_import_packages(TestCase):
             pass
 
         with self.assertRaises(ImportError):
-            _import_packages({'im_not_a_real_package'})
+            _import_packages(set(['im_not_a_real_package']))
 
     def test_optional_import_missing(self):
         try:
@@ -54,7 +54,7 @@ class Test_import_packages(TestCase):
 
         with catch_warnings(record=True) as caught_warnings:
             simplefilter(u"always")
-            _import_packages({}, optional={'im_not_a_real_package'})
+            _import_packages(set(), optional=set(['im_not_a_real_package']))
 
         self.assertEqual(len(caught_warnings), 1)
         self.assertTrue(all(w.category is ImportWarning for w in caught_warnings))
