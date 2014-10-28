@@ -24,14 +24,14 @@ class Test_import_packages(TestCase):
         import wheel
         import sys
         expected = {wheel, sys}
-        actual = _import_packages({u'wheel', u'sys'})
+        actual = _import_packages({'wheel', 'sys'})
         self.assertSetEqual(expected, actual)
 
     def test_optional_imports_exist(self):
         import wheel
         import sys
         expected = {wheel, sys}
-        actual = _import_packages({}, optional={u'wheel', u'sys'})
+        actual = _import_packages({}, optional={'wheel', 'sys'})
         self.assertSetEqual(expected, actual)
 
     def test_required_import_missing(self):
@@ -42,7 +42,7 @@ class Test_import_packages(TestCase):
             pass
 
         with self.assertRaises(ImportError):
-            _import_packages({u'im_not_a_real_package'})
+            _import_packages({'im_not_a_real_package'})
 
     def test_optional_import_missing(self):
         try:
@@ -53,7 +53,7 @@ class Test_import_packages(TestCase):
 
         with catch_warnings(record=True) as caught_warnings:
             simplefilter(u"always")
-            _import_packages({}, optional={u'im_not_a_real_package'})
+            _import_packages({}, optional={'im_not_a_real_package'})
 
         self.assertEqual(len(caught_warnings), 1)
         self.assertTrue(all(w.category is ImportWarning for w in caught_warnings))
@@ -62,33 +62,32 @@ class Test_import_packages(TestCase):
 class Test_build_includes(TestCase):
 
     def test_default_build_includes(self):
-        packages = {u'wheel', u'sys'}
+        packages = {'wheel', 'sys'}
         expected = {
-            u'sys',
-            u'wheel',
-            u'wheel.signatures.*',
-            u'wheel.test.*',
-            u'wheel.test.complex-dist.complexdist.*',
-            u'wheel.test.simple.dist.simpledist.*',
-            u'wheel.tool.*',
+            'sys',
+            'wheel',
+            'wheel.signatures.*',
+            'wheel.test.*',
+            'wheel.test.complex-dist.complexdist.*',
+            'wheel.test.simple.dist.simpledist.*',
+            'wheel.tool.*',
         }
         actual = build_includes(packages, freezer=FREEZER.DEFAULT)
         self.assertSetEqual(expected, actual)
 
     def test_cxfreeze_build_includes(self):
-        packages = {u'wheel', u'sys'}
+        packages = {'wheel', 'sys'}
         expected = {
-            u'sys', u'wheel', u'wheel.__main__', u'wheel.archive', u'wheel.bdist_wheel', u'wheel.decorator',
-            u'wheel.egg2wheel', u'wheel.install', u'wheel.metadata', u'wheel.paths', u'wheel.pep425tags',
-            u'wheel.pkginfo', u'wheel.signatures', u'wheel.signatures.djbec', u'wheel.signatures.ed25519py',
-            u'wheel.signatures.keys', u'wheel.test', u'wheel.test.complex-dist.complexdist',
-            u'wheel.test.simple.dist.simpledist', u'wheel.test.test_basic', u'wheel.test.test_install',
-            u'wheel.test.test_keys', u'wheel.test.test_paths', u'wheel.test.test_ranking',
-            u'wheel.test.test_signatures', u'wheel.test.test_tagopt', u'wheel.test.test_tool',
-            u'wheel.test.test_wheelfile', u'wheel.tool', u'wheel.util', u'wheel.wininst2wheel'
+            'sys', 'wheel', 'wheel.__main__', 'wheel.archive', 'wheel.bdist_wheel', 'wheel.decorator',
+            'wheel.egg2wheel', 'wheel.install', 'wheel.metadata', 'wheel.paths', 'wheel.pep425tags',
+            'wheel.pkginfo', 'wheel.signatures', 'wheel.signatures.djbec', 'wheel.signatures.ed25519py',
+            'wheel.signatures.keys', 'wheel.test', 'wheel.test.complex-dist.complexdist',
+            'wheel.test.simple.dist.simpledist', 'wheel.test.test_basic', 'wheel.test.test_install',
+            'wheel.test.test_keys', 'wheel.test.test_paths', 'wheel.test.test_ranking',
+            'wheel.test.test_signatures', 'wheel.test.test_tagopt', 'wheel.test.test_tool',
+            'wheel.test.test_wheelfile', 'wheel.tool', 'wheel.util', 'wheel.wininst2wheel'
         }
         actual = build_includes(packages, freezer=FREEZER.CXFREEZE)
-        print sorted(actual)
         self.assertSetEqual(expected, actual)
 
 if __name__ == '__main__':

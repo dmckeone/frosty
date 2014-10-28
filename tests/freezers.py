@@ -18,11 +18,11 @@ class Test_freezer_resolve(TestCase):
     """
 
     freezers = [
-        (FREEZER.DEFAULT, u'default'),
-        (FREEZER.PY2APP, u'py2app'),
-        (FREEZER.PY2EXE, u'py2exe'),
-        (FREEZER.BBFREEZE, u'bbfreeze'),
-        (FREEZER.CXFREEZE, u'cxfreeze')
+        (FREEZER.DEFAULT, 'default'),
+        (FREEZER.PY2APP, 'py2app'),
+        (FREEZER.PY2EXE, 'py2exe'),
+        (FREEZER.BBFREEZE, 'bbfreeze'),
+        (FREEZER.CXFREEZE, 'cxfreeze')
     ]
 
     def test_string_constant_lookup(self):
@@ -40,7 +40,7 @@ class Test_freezer_resolve(TestCase):
         """
         for python_constant_cls, expected_name in self.freezers:
             actual_instance = resolve_freezer(python_constant_cls)
-            actual_name = unicode(actual_instance)
+            actual_name = str(actual_instance)
             self.assertEqual(actual_name, expected_name)
 
     def test_instantiated_built_in_lookup(self):

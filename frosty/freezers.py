@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 import os
 import re
+import six
 
 from warnings import warn
 
@@ -28,12 +29,12 @@ class _Default(UnicodeMixin, object):
         :return: 2-tuple of a list of the pass-through includes and the package_root_paths
         """
         passthrough_includes = {
-            unicode(package.__name__)
+            str(package.__name__)
             for package in include_packages
             if not hasattr(package, '__file__')
         }
         package_file_paths = {
-            unicode(os.path.abspath(package.__file__)): unicode(package.__name__)
+            str(os.path.abspath(package.__file__)): str(package.__name__)
             for package in include_packages
             if hasattr(package, '__file__')
         }
@@ -55,12 +56,12 @@ class _Default(UnicodeMixin, object):
         :param include_packages: List of package references to recurse for subpackages
         """
         includes, package_root_paths = cls._split_packages(include_packages)
-        for package_path, package_name in package_root_paths.iteritems():
-            if re.search(ur'__init__.py.*$', package_path):
+        for package_path, package_name in six.iteritems(package_root_paths):
+            if re.search(r'__init__.py.*$', package_path):
                 # Looks like a package.  Walk the directory and see if there are more.
                 package_files = {os.path.dirname(package_path)}
                 for root, dirs, files in os.walk(os.path.dirname(package_path)):
-                    if u'__init__.py' in files:
+                    if '__init__.py' in files:
                         package_files.add(root)
 
                 if len(package_files) > 1:
@@ -68,7 +69,7 @@ class _Default(UnicodeMixin, object):
                     common_dir = os.path.dirname(common_prefix)
                     package_tails = {f[len(common_dir) + len(os.sep):] for f in package_files}
                     package_names = {tail.replace(os.sep, '.') for tail in package_tails}
-                    package_names_with_star = {pkg + u'.*' if pkg != package_name else pkg for pkg in package_names}
+                    package_names_with_star = {pkg + '.*' if pkg != package_name else pkg for pkg in package_names}
                     includes |= package_names_with_star
 
                 else:
@@ -134,21 +135,21 @@ class _CxFreeze(_Default):
         :param include_packages: List of package references to recurse for subpackages
         """
         includes, package_root_paths = cls._split_packages(include_packages)
-        for package_path, package_name in package_root_paths.iteritems():
+        for package_path, package_name in six.iteritems(package_root_paths):
             includes.add(package_name)
-            if re.search(ur'__init__.py.*$', package_path):
+            if re.search(r'__init__.py.*$', package_path):
                 # Looks like a package.  Walk the directory and see if there are more.
                 package_modules = set()
                 for root, dirs, files in os.walk(os.path.dirname(package_path)):
-                    if u'__init__.py' in files:
+                    if '__init__.py' in files:
                         package_modules.add(root)
-                        for module in [f for f in files if f != u"__init__.py" and f.endswith(u'.py')]:
+                        for module in [f for f in files if f != u"__init__.py" and f.endswith('.py')]:
                             package_modules.add(os.path.join(root, module))
 
                 common_prefix = os.path.commonprefix(package_modules)
                 common_dir = os.path.dirname(common_prefix)
                 package_tails = {f[len(common_dir) + len(os.sep):] for f in package_modules}
-                package_names = {os.path.splitext(tail)[0].replace(os.sep, u'.') for tail in package_tails}
+                package_names = {os.path.splitext(tail)[0].replace(os.sep, '.') for tail in package_tails}
                 includes |= package_names
         return includes
 
@@ -180,8 +181,8 @@ def _freezer_lookup(freezer_string):
     sanitized = freezer_string.lower().strip()
     for freezer in FREEZER.ALL:
         freezer_instance = freezer()
-        freezer_name = unicode(freezer_instance)
-        if freezer_name == unicode(sanitized):
+        freezer_name = str(freezer_instance)
+        if freezer_name == str(sanitized):
             return freezer
     else:
         if sanitized != freezer_string:
@@ -203,7 +204,7 @@ def resolve_freezer(freezer):
         return _Default()
 
     # Allow character based lookups as well
-    if isinstance(freezer, basestring):
+    if isinstance(freezer, six.string_types):
         cls = _freezer_lookup(freezer)
         return cls()
 
