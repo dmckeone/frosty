@@ -21,19 +21,17 @@ class Test_import_packages(TestCase):
     """
 
     def test_imports_exist(self):
-        import distutils
-        import encodings
+        import wheel
         import sys
-        expected = {distutils, encodings, sys}
-        actual = _import_packages({u'distutils', u'encodings', u'sys'})
+        expected = {wheel, sys}
+        actual = _import_packages({u'wheel', u'sys'})
         self.assertSetEqual(expected, actual)
 
     def test_optional_imports_exist(self):
-        import distutils
-        import encodings
+        import wheel
         import sys
-        expected = {distutils, encodings, sys}
-        actual = _import_packages({}, optional={u'distutils', u'encodings', u'sys'})
+        expected = {wheel, sys}
+        actual = _import_packages({}, optional={u'wheel', u'sys'})
         self.assertSetEqual(expected, actual)
 
     def test_required_import_missing(self):
@@ -63,121 +61,34 @@ class Test_import_packages(TestCase):
 
 class Test_build_includes(TestCase):
 
-    # Split out cx_freeze expected output because it's so large
-    cx_freeze_expected = {
-        u'distutils',
-        u'distutils.archive_util',
-        u'distutils.bcppcompiler',
-        u'distutils.ccompiler',
-        u'distutils.cmd',
-        u'distutils.command',
-        u'distutils.command.bdist',
-        u'distutils.command.bdist_dumb',
-        u'distutils.command.bdist_msi',
-        u'distutils.command.bdist_rpm',
-        u'distutils.command.bdist_wininst',
-        u'distutils.command.build',
-        u'distutils.command.build_clib',
-        u'distutils.command.build_ext',
-        u'distutils.command.build_py',
-        u'distutils.command.build_scripts',
-        u'distutils.command.check',
-        u'distutils.command.clean',
-        u'distutils.command.config',
-        u'distutils.command.install',
-        u'distutils.command.install_data',
-        u'distutils.command.install_egg_info',
-        u'distutils.command.install_headers',
-        u'distutils.command.install_lib',
-        u'distutils.command.install_scripts',
-        u'distutils.command.register',
-        u'distutils.command.sdist',
-        u'distutils.command.upload',
-        u'distutils.config',
-        u'distutils.core',
-        u'distutils.cygwinccompiler',
-        u'distutils.debug',
-        u'distutils.dep_util',
-        u'distutils.dir_util',
-        u'distutils.dist',
-        u'distutils.emxccompiler',
-        u'distutils.errors',
-        u'distutils.extension',
-        u'distutils.fancy_getopt',
-        u'distutils.file_util',
-        u'distutils.filelist',
-        u'distutils.log',
-        u'distutils.msvc9compiler',
-        u'distutils.msvccompiler',
-        u'distutils.spawn',
-        u'distutils.sysconfig',
-        u'distutils.tests',
-        u'distutils.tests.setuptools_build_ext',
-        u'distutils.tests.setuptools_extension',
-        u'distutils.tests.support',
-        u'distutils.tests.test_archive_util',
-        u'distutils.tests.test_bdist',
-        u'distutils.tests.test_bdist_dumb',
-        u'distutils.tests.test_bdist_msi',
-        u'distutils.tests.test_bdist_rpm',
-        u'distutils.tests.test_bdist_wininst',
-        u'distutils.tests.test_build',
-        u'distutils.tests.test_build_clib',
-        u'distutils.tests.test_build_ext',
-        u'distutils.tests.test_build_py',
-        u'distutils.tests.test_build_scripts',
-        u'distutils.tests.test_ccompiler',
-        u'distutils.tests.test_check',
-        u'distutils.tests.test_clean',
-        u'distutils.tests.test_cmd',
-        u'distutils.tests.test_config',
-        u'distutils.tests.test_config_cmd',
-        u'distutils.tests.test_core',
-        u'distutils.tests.test_dep_util',
-        u'distutils.tests.test_dir_util',
-        u'distutils.tests.test_dist',
-        u'distutils.tests.test_file_util',
-        u'distutils.tests.test_filelist',
-        u'distutils.tests.test_install',
-        u'distutils.tests.test_install_data',
-        u'distutils.tests.test_install_headers',
-        u'distutils.tests.test_install_lib',
-        u'distutils.tests.test_install_scripts',
-        u'distutils.tests.test_msvc9compiler',
-        u'distutils.tests.test_register',
-        u'distutils.tests.test_sdist',
-        u'distutils.tests.test_spawn',
-        u'distutils.tests.test_sysconfig',
-        u'distutils.tests.test_text_file',
-        u'distutils.tests.test_unixccompiler',
-        u'distutils.tests.test_upload',
-        u'distutils.tests.test_util',
-        u'distutils.tests.test_version',
-        u'distutils.tests.test_versionpredicate',
-        u'distutils.text_file',
-        u'distutils.unixccompiler',
-        u'distutils.util',
-        u'distutils.version',
-        u'distutils.versionpredicate',
-        u'sys'
-    }
-
     def test_default_build_includes(self):
-        packages = {u'distutils', u'encodings', u'sys'}
+        packages = {u'wheel', u'sys'}
         expected = {
-            u'distutils',
-            u'distutils.command.*',
-            u'distutils.tests.*',
-            u'encodings',
-            u'sys'
+            u'sys',
+            u'wheel',
+            u'wheel.signatures.*',
+            u'wheel.test.*',
+            u'wheel.test.complex-dist.complexdist.*',
+            u'wheel.test.simple.dist.simpledist.*',
+            u'wheel.tool.*',
         }
         actual = build_includes(packages, freezer=FREEZER.DEFAULT)
         self.assertSetEqual(expected, actual)
 
     def test_cxfreeze_build_includes(self):
-        packages = {u'distutils', u'sys'}
-        expected = self.cx_freeze_expected
+        packages = {u'wheel', u'sys'}
+        expected = {
+            u'sys', u'wheel', u'wheel.__main__', u'wheel.archive', u'wheel.bdist_wheel', u'wheel.decorator',
+            u'wheel.egg2wheel', u'wheel.install', u'wheel.metadata', u'wheel.paths', u'wheel.pep425tags',
+            u'wheel.pkginfo', u'wheel.signatures', u'wheel.signatures.djbec', u'wheel.signatures.ed25519py',
+            u'wheel.signatures.keys', u'wheel.test', u'wheel.test.complex-dist.complexdist',
+            u'wheel.test.simple.dist.simpledist', u'wheel.test.test_basic', u'wheel.test.test_install',
+            u'wheel.test.test_keys', u'wheel.test.test_paths', u'wheel.test.test_ranking',
+            u'wheel.test.test_signatures', u'wheel.test.test_tagopt', u'wheel.test.test_tool',
+            u'wheel.test.test_wheelfile', u'wheel.tool', u'wheel.util', u'wheel.wininst2wheel'
+        }
         actual = build_includes(packages, freezer=FREEZER.CXFREEZE)
+        print sorted(actual)
         self.assertSetEqual(expected, actual)
 
 if __name__ == '__main__':
