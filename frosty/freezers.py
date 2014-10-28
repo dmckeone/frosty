@@ -33,11 +33,11 @@ class _Default(UnicodeMixin, object):
             for package in include_packages
             if not hasattr(package, '__file__')
         ])
-        package_file_paths = {
-            str(os.path.abspath(package.__file__)): str(package.__name__)
+        package_file_paths = dict([
+            (str(os.path.abspath(package.__file__)), str(package.__name__))
             for package in include_packages
             if hasattr(package, '__file__')
-        }
+        ])
         return passthrough_includes, package_file_paths
 
     @classmethod
