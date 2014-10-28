@@ -17,7 +17,7 @@ test_requirements = []
 
 setup(
     name='frosty',
-    version=frosty.__version__,
+    version='0.1.6',
     description='Frosty is a collection of utilities for working with frozen packages.',
     long_description=readme + '\n\n' + history,
     author='David McKeone',
