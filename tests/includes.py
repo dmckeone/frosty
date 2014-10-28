@@ -75,7 +75,7 @@ class Test_build_includes(unittest.TestCase):
             'wheel.tool.*',
         ])
         actual = build_includes(packages, freezer=FREEZER.DEFAULT)
-        self.assertSetEqual(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_cxfreeze_build_includes(self):
         packages = set(['wheel', 'sys'])
@@ -90,7 +90,7 @@ class Test_build_includes(unittest.TestCase):
             'wheel.test.test_wheelfile', 'wheel.tool', 'wheel.util', 'wheel.wininst2wheel'
         ])
         actual = build_includes(packages, freezer=FREEZER.CXFREEZE)
-        self.assertSetEqual(expected, actual)
+        self.assertEqual(expected, actual)
 
 if __name__ == '__main__':
     unittest.main()
