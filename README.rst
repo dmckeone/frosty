@@ -1,6 +1,6 @@
-===============================
+======
 Frosty
-===============================
+======
 
 .. image:: https://badge.fury.io/py/frosty.png
     :target: http://badge.fury.io/py/frosty
