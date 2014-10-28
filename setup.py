@@ -33,7 +33,7 @@ setup(
     install_requires=requirements,
     license="BSD",
     zip_safe=False,
-    download_url = 'https://github.com/dmckeone/Frosty/tarball/{}'.format(frosty.__version__),
+    download_url = 'https://github.com/dmckeone/Frosty/tarball/{0}'.format(frosty.__version__),
     keywords=['frosty', 'frozen', 'esky', 'py2app', 'py2exe', 'bbfreeze', 'cxfreeze', 'utilities'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
